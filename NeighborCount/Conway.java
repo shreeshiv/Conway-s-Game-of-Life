@@ -53,6 +53,58 @@ class Pair {
     }
 }
 
+class CurrentState {
+    private List<Integer> xCoordinates;
+    private List<Integer> yCoordinates;
+    private int rowSize;
+    private int colSize;
+
+    CurrentState(int rowSize, int colSize, List<Integer> xCoordinates, List<Integer> yCoordinates) {
+        this.xCoordinates = xCoordinates;
+        this.yCoordinates = yCoordinates;
+        this.rowSize = rowSize;
+        this.colSize = colSize;
+    }
+
+    CurrentState(List<Integer> xCoordinates, List<Integer> yCoordinates) {
+        this.xCoordinates = xCoordinates;
+        this.yCoordinates = yCoordinates;
+    }
+
+    public List<Integer> getXCoordinates() {
+        return this.xCoordinates;
+    }
+
+    public void setXCoordinates(List<Integer> xCoordinates) {
+        this.xCoordinates = xCoordinates;
+    }
+
+    public List<Integer> getYCoordinates() {
+        return this.yCoordinates;
+    }
+
+    public void setYCoordinates(List<Integer> yCoordinates) {
+        this.yCoordinates = yCoordinates;
+    }
+
+    public int getRowSize() {
+        return this.rowSize;
+    }
+
+    public void setRowSize(int rowSize) {
+        this.rowSize = rowSize;
+    }
+
+    public int getColSize() {
+        return this.colSize;
+    }
+
+    public void setColSize(int colSize) {
+        this.colSize = colSize;
+    }
+
+}
+
 public class Conway {
 
     private int totalLiveCells;
@@ -60,12 +112,14 @@ public class Conway {
     private List<Integer> yCoordinates;
     private int rowSize;
     private int colSize;
+    private List<CurrentState> history;
 
     private HashMap<Pair, Integer> indexing;
 
     Conway(int size) {
         rowSize = size;
         colSize = size;
+        history = new ArrayList<CurrentState>();
     }
 
     Conway(int size, int totalLiveCells, List<Integer> xCoords, List<Integer> yCoords) {
@@ -78,6 +132,8 @@ public class Conway {
         for (int index = 0; index < totalLiveCells; index++) {
             indexing.put(new Pair(xCoords.get(index), yCoords.get(index)), 1);
         }
+        history = new ArrayList<CurrentState>();
+
     }
 
     Conway(int rowSize, int colSize, int totalLiveCells, List<Integer> xCoords, List<Integer> yCoords) {
@@ -90,6 +146,8 @@ public class Conway {
         for (int index = 0; index < totalLiveCells; index++) {
             indexing.put(new Pair(xCoords.get(index), yCoords.get(index)), 1);
         }
+        history = new ArrayList<CurrentState>();
+
     }
 
     public void printGrid() {
@@ -238,6 +296,7 @@ public class Conway {
                 newYCords.add(curP.getYCoordinate());
             }
         }
+        history.add(new CurrentState(xCoordinates, yCoordinates));
         totalLiveCells = newXCords.size();
         xCoordinates = newXCords;
         yCoordinates = newYCords;
@@ -249,7 +308,18 @@ public class Conway {
     }
 
     public void loadPreviousState() {
-
+        if (history.size() <= 0) {
+            System.out.println("Not enough generations");
+            return;
+        }
+        this.xCoordinates = history.get(history.size() - 1).getXCoordinates();
+        this.yCoordinates = history.get(history.size() - 1).getYCoordinates();
+        history.remove(history.size() - 1);
+        this.totalLiveCells = xCoordinates.size();
+        indexing = new HashMap<Pair, Integer>();
+        for (int index = 0; index < totalLiveCells; index++) {
+            indexing.put(new Pair(xCoordinates.get(index), yCoordinates.get(index)), 1);
+        }
     }
 
     public void loadState(int totalLiveCells, List<Integer> xCoords, List<Integer> yCoords) {

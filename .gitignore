@@ -1,0 +1,6 @@
+#ignore all compiled files
+*.class
+# ignore all logs
+*.log
+#
+.DS_Store
