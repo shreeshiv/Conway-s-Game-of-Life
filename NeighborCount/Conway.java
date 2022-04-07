@@ -93,18 +93,25 @@ public class Conway {
     }
 
     public void printGrid() {
-        System.out.println(rowSize + " " + colSize);
-        System.out.println("" + indexing.size());
+
+        for (int itr = 0; itr <= 2 * colSize; itr++) {
+            System.out.print("-");
+        }
 
         for (int itrRow = 0; itrRow < rowSize; itrRow++) {
+            System.out.print("|");
             for (int itrCol = 0; itrCol < colSize; itrCol++) {
                 if (indexing.containsKey(new Pair(itrRow, itrCol))) {
-                    System.out.print("\u2593");
+                    System.out.print("\u2593 ");
                 } else
-                    System.out.print(" ");
+                    System.out.print("  ");
             }
-            System.out.println("");
+            System.out.print("|\n");
         }
+        for (int itr = 0; itr <= 2 * colSize + 1; itr++) {
+            System.out.print("-");
+        }
+        System.out.println("");
         try {
             Thread.sleep(100);
         } catch (Exception e) {

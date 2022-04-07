@@ -3,6 +3,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
     public static void main(String args[]) {
         System.out.println("welcome to Conway's game of life");
         Scanner sc = new Scanner(System.in);
@@ -22,19 +27,34 @@ public class Main {
         }
         conway.loadState(totalLiveCells, xCoords, yCoords);
         conway.printGrid();
-        System.out.println("Enter following command \n 1 For next state \n 2 For exit \n 3 For previous state");
-        while (true) {
+        System.out.println(
+                "Enter following command \n0 For generating next 100 productions with 100 ms sleep\n 1 For next state \n 2 For previous state \n 3 For exit ");
+        boolean isExit = false;
+        while (!isExit) {
             command = sc.nextInt();
-            if (command == 2)
-                break;
-            else if (command == 1) {
-                conway.generateNextState();
-                conway.printGrid();
-            } else if (command == 3) {
-                conway.loadPreviousState();
-                conway.printGrid();
-            } else {
-                System.out.println("Enter valid command");
+            switch (command) {
+                case 0:
+                    for (int itrProduction = 0; itrProduction < 100; itrProduction++) {
+                        conway.generateNextState();
+                        clearScreen();
+                        conway.printGrid();
+                    }
+                    break;
+
+                case 1:
+                    conway.generateNextState();
+                    conway.printGrid();
+                    break;
+                case 2:
+                    conway.loadPreviousState();
+                    conway.printGrid();
+                    break;
+                case 3:
+                    isExit = true;
+                    break;
+                default:
+                    System.out.println("Enter valid input");
+
             }
 
         }
