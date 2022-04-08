@@ -26,9 +26,7 @@ Steps to run:
 
 2. Space Optimizes Approach:
 
-- Go to Neighborcount directory <br>
-
-`cd NeighborCount`
+- Go to Neighborcount directory <br>`cd NeighborCount`
 
 - `javac Main.java`
 
